@@ -1,0 +1,1406 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Apr 21 19:41:32 2021
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> create table login (id int primary key, username varchar(20) not null, password varchar(20) not null, privilege varchar(20) not null);
+
+Table created.
+
+SQL> insert into login values(&id, '&username', '&password', '&privilege');
+Enter value for id: 1
+Enter value for username: Priyanshu
+Enter value for password: 12345
+Enter value for privilege: Admin
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(1, 'Priyanshu', '12345', 'Admin')
+
+1 row created.
+
+SQL> /
+Enter value for id: 2
+Enter value for username: Nitin
+Enter value for password: 12345
+Enter value for privilege: Admin
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(2, 'Nitin ', '12345', 'Admin')
+
+1 row created.
+
+SQL> /
+Enter value for id: 3
+Enter value for username: Saaransh
+Enter value for password: 12345
+Enter value for privilege: Student
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(3, 'Saaransh', '12345', 'Student')
+
+1 row created.
+
+SQL> /
+Enter value for id: 4
+Enter value for username: Sumit
+Enter value for password: 12345
+Enter value for privilege: Student
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(4, 'Sumit', '12345', 'Student')
+
+1 row created.
+
+SQL> /
+Enter value for id: 5
+Enter value for username: Abhijeet
+Enter value for password: 12345
+Enter value for privilege: Student
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(5, 'Abhijeet', '12345', 'Student')
+
+1 row created.
+
+SQL> /
+Enter value for id: 6
+Enter value for username: Akshat
+Enter value for password: 12345
+Enter value for privilege: Student
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(6, 'Akshat', '12345', 'Student')
+
+1 row created.
+
+SQL> /
+Enter value for id: 7
+Enter value for username: Sidhu
+Enter value for password: 12345
+Enter value for privilege: Faculty
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(7, 'Sidhu', '12345', 'Faculty')
+
+1 row created.
+
+SQL> /
+Enter value for id: 8
+Enter value for username: Sanchit
+Enter value for password: 12345
+Enter value for privilege: Faculty
+old   1: insert into login values(&id, '&username', '&password', '&privilege')
+new   1: insert into login values(8, 'Sanchit', '12345', 'Faculty')
+
+1 row created.
+
+SQL> select * from table login
+  2
+SQL> select * from table login;
+select * from table login
+                    *
+ERROR at line 1:
+ORA-00906: missing left parenthesis
+
+
+SQL> select * from login;
+
+        ID USERNAME             PASSWORD             PRIVILEGE
+---------- -------------------- -------------------- --------------------
+         1 Priyanshu            12345                Admin
+         2 Nitin                12345                Admin
+         3 Saaransh             12345                Student
+         4 Sumit                12345                Student
+         5 Abhijeet             12345                Student
+         6 Akshat               12345                Student
+         7 Sidhu                12345                Faculty
+         8 Sanchit              12345                Faculty
+
+8 rows selected.
+
+SQL> CREATE TABLE `LIBRARY`.`BOOK_DETAILS` (`ID` INT NOT NULL ,
+  2  `TITLE` VARCHAR( 30 ) NOT NULL ,`AUTHOR` TEXT NOT NULL ,`PUBLISHER` VARC
+  3  HAR( 30 ) NOT NULL ,`KEYWORD` VARCHAR( 60 ) NOT NULL ,`ISBN` INT NOT NUL
+  4  L ,`ABSTRACT` VARCHAR( 60 ) NOT NULL ,`YEAR_OF_PU
+  5  /
+CREATE TABLE `LIBRARY`.`BOOK_DETAILS` (`ID` INT NOT NULL ,
+             *
+ERROR at line 1:
+ORA-00911: invalid character
+
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table book_details (id int foreign key references login(id), title varchar(20) not null , author varchar(20) not null, year_of_publishing date not null );
+create table book_details (id int foreign key references login(id), title varchar(20) not null , author varchar(20) not null, year_of_publishing date not null )
+                                  *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table book_details (id int references login(id), title varchar(20) not null , author varchar(20) not null, year_of_publishing date not null );
+
+Table created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> insert into book_details values(&id , '&title', '&author', '&year_of_publishing');
+Enter value for id: /
+Enter value for title: /
+Enter value for author:
+Enter value for year_of_publishing:
+old   1: insert into book_details values(&id , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(/ , '/', '', '')
+insert into book_details values(/ , '/', '', '')
+                                *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select * from book_details ;
+
+no rows selected
+
+SQL> alter table book_details add(bookid int);
+
+Table altered.
+
+SQL> desc book_details;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                                 NUMBER(38)
+ TITLE                                     NOT NULL VARCHAR2(20)
+ AUTHOR                                    NOT NULL VARCHAR2(20)
+ YEAR_OF_PUBLISHING                        NOT NULL DATE
+ BOOKID                                             NUMBER(38)
+
+SQL> drop table book_details;
+
+Table dropped.
+
+SQL> create table book_details (id int references login(id), title varchar(20) not null , author varchar(20) not null, year_of_publishing varchar(20) not null );
+
+Table created.
+
+SQL> drop table book_details;
+
+Table dropped.
+
+SQL> create table book_details (id int references login(id),bookid int primary key , title varchar(20) not null , author varchar(20) not null, year_of_publishing varchar(20) not null );
+
+Table created.
+
+SQL> insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing');
+Enter value for id: 1
+Enter value for bookid: 101
+Enter value for title: Java For Dummies
+Enter value for author: Paul J. Deitel
+Enter value for year_of_publishing: 1999-12-10
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(1 , 101 , 'Java For Dummies', 'Paul J. Deitel', '1999-12-10')
+
+1 row created.
+
+SQL> /
+Enter value for id: 2
+Enter value for bookid: 102
+Enter value for title: Java How To Do Program
+Enter value for author: Paul J. Deitel
+Enter value for year_of_publishing: 1999-05-10
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(2 , 102 , 'Java How To Do Program', 'Paul J. Deitel', '1999-05-10')
+insert into book_details values(2 , 102 , 'Java How To Do Program', 'Paul J. Deitel', '1999-05-10')
+                                          *
+ERROR at line 1:
+ORA-12899: value too large for column "SYSTEM"."BOOK_DETAILS"."TITLE" (actual:
+22, maximum: 20)
+
+
+SQL> /
+Enter value for id: //
+Enter value for bookid: //
+Enter value for title: /
+Enter value for author: ///
+Enter value for year_of_publishing: /
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(// , // , '/', '///', '/')
+insert into book_details values(// , // , '/', '///', '/')
+                                *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> alter table book_details alter column title varchar(50);
+alter table book_details alter column title varchar(50)
+                         *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option
+
+
+SQL> alter table book_details column title varchar(50);
+alter table book_details column title varchar(50)
+                         *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> alter table book_details alter  column title varchar(50);
+alter table book_details alter  column title varchar(50)
+                         *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option
+
+
+SQL> alter table book_details modify  column title varchar(50);
+alter table book_details modify  column title varchar(50)
+                                              *
+ERROR at line 1:
+ORA-00905: missing keyword
+
+
+SQL> alter table book_details modify title varchar(50);
+
+Table altered.
+
+SQL> insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing');
+Enter value for id: 2
+Enter value for bookid: 102
+Enter value for title: Java: The Complete Reference
+Enter value for author: Herbert Schildt
+Enter value for year_of_publishing: 2011-10-10
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(2 , 102 , 'Java: The Complete Reference', 'Herbert Schildt', '2011-10-10')
+
+1 row created.
+
+SQL> /
+Enter value for id: 2
+Enter value for bookid: 103
+Enter value for title: Let Us C
+Enter value for author: Yashavant Kanetkar
+Enter value for year_of_publishing: 2010-12-11
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(2 , 103 , 'Let Us C', 'Yashavant Kanetkar', '2010-12-11')
+
+1 row created.
+
+SQL> /
+Enter value for id: 5
+Enter value for bookid: 104
+Enter value for title: Let Us C++
+Enter value for author: Yashavant Kanetkar
+Enter value for year_of_publishing: 2010-05-12
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(5 , 104 , 'Let Us C++', 'Yashavant Kanetkar', '2010-05-12')
+
+1 row created.
+
+SQL> /
+Enter value for id: 6
+Enter value for bookid: 105
+Enter value for title: Harry Potter 4
+Enter value for author: J.K Rowling
+Enter value for year_of_publishing: 2005-12-03
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(6 , 105 , 'Harry Potter 4', 'J.K Rowling', '2005-12-03')
+
+1 row created.
+
+SQL> /
+Enter value for id: 4
+Enter value for bookid: 106
+Enter value for title: Witcher
+Enter value for author: Priyanshu Saklani
+Enter value for year_of_publishing: 2010-11-09
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(4 , 106 , 'Witcher ', 'Priyanshu Saklani', '2010-11-09')
+
+1 row created.
+
+SQL>
+SQL> /
+Enter value for id: 7
+Enter value for bookid: 107
+Enter value for title: Batman
+Enter value for author: Bob Kane
+Enter value for year_of_publishing: 1997-06-05
+old   1: insert into book_details values(&id , &bookid , '&title', '&author', '&year_of_publishing')
+new   1: insert into book_details values(7 , 107 , 'Batman', 'Bob Kane', '1997-06-05')
+
+1 row created.
+
+SQL> select * from book_details;
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         1        101 Java For Dummies
+Paul J. Deitel       1999-12-10
+
+         2        102 Java: The Complete Reference
+Herbert Schildt      2011-10-10
+
+         2        103 Let Us C
+Yashavant Kanetkar   2010-12-11
+
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         5        104 Let Us C++
+Yashavant Kanetkar   2010-05-12
+
+         6        105 Harry Potter 4
+J.K Rowling          2005-12-03
+
+         4        106 Witcher
+Priyanshu Saklani    2010-11-09
+
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         7        107 Batman
+Bob Kane             1997-06-05
+
+
+7 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
+
+SQL> create table book_issue(id int references login(id), bookid int references book_details(bookid), issue_date varchar(20) not null , return_date varchar(20));
+
+Table created.
+
+SQL> insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date');
+Enter value for id: 1
+Enter value for bookid: 101
+Enter value for issue_date: 2020-01-01
+Enter value for return_date: 2020-02-03
+old   1: insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date')
+new   1: insert into book_issue values(1 ,101,'2020-01-01', '2020-02-03')
+
+1 row created.
+
+SQL> /
+Enter value for id: 2
+Enter value for bookid: 102
+Enter value for issue_date: 2020-02-03
+Enter value for return_date: 2020-02-04
+old   1: insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date')
+new   1: insert into book_issue values(2 ,102,'2020-02-03', '2020-02-04')
+
+1 row created.
+
+SQL> /
+Enter value for id: 5
+Enter value for bookid: 104
+Enter value for issue_date: 2020-05-06
+Enter value for return_date: 2020-05-07
+old   1: insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date')
+new   1: insert into book_issue values(5 ,104,'2020-05-06', '2020-05-07')
+
+1 row created.
+
+SQL> /
+Enter value for id: 6
+Enter value for bookid: 105
+Enter value for issue_date: 2020-03-06
+Enter value for return_date: 2020-04-12
+old   1: insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date')
+new   1: insert into book_issue values(6 ,105,'2020-03-06', '2020-04-12')
+
+1 row created.
+
+SQL> /
+Enter value for id: 7
+Enter value for bookid: 107
+Enter value for issue_date: 2020-06-06
+Enter value for return_date: 2020-07-07
+old   1: insert into book_issue values(&id ,&bookid,'&issue_date', '&return_date')
+new   1: insert into book_issue values(7 ,107,'2020-06-06', '2020-07-07')
+
+1 row created.
+
+SQL> select * from book_issue;
+
+        ID     BOOKID ISSUE_DATE           RETURN_DATE
+---------- ---------- -------------------- --------------------
+         1        101 2020-01-01           2020-02-03
+         2        102 2020-02-03           2020-02-04
+         5        104 2020-05-06           2020-05-07
+         6        105 2020-03-06           2020-04-12
+         7        107 2020-06-06           2020-07-07
+
+SQL>
+
+
+
+
+
+
+
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Apr 28 15:20:46 2021
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> select * from book_details;
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         1        101 Java For Dummies
+Paul J. Deitel       1999-12-10
+
+         2        102 Java: The Complete Reference
+Herbert Schildt      2011-10-10
+
+         2        103 Let Us C
+Yashavant Kanetkar   2010-12-11
+
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         5        104 Let Us C++
+Yashavant Kanetkar   2010-05-12
+
+         6        105 Harry Potter 4
+J.K Rowling          2005-12-03
+
+         4        106 Witcher
+Priyanshu Saklani    2010-11-09
+
+
+        ID     BOOKID TITLE
+---------- ---------- --------------------------------------------------
+AUTHOR               YEAR_OF_PUBLISHING
+-------------------- --------------------
+         7        107 Batman
+Bob Kane             1997-06-05
+
+
+7 rows selected.
+
+SQL> create table book_price (bookid int references book_deatils(bookid),price decimal,issue_price decimal);
+create table book_price (bookid int references book_deatils(bookid),price decimal,issue_price decimal)
+                                               *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create table book_price (bookid int references book_details(bookid),price decimal,issue_price decimal);
+
+Table created.
+
+SQL> insert into book_price values(&bid,&price,&issue_price);
+Enter value for bid: 101
+Enter value for price: 1200.21
+Enter value for issue_price: 100
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(101,1200.21,100)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 102
+Enter value for price: 1500
+Enter value for issue_price: 100.20
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(102,1500,100.20)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 103
+Enter value for price: 1000
+Enter value for issue_price: 100
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(103,1000,100)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 104
+Enter value for price: 800
+Enter value for issue_price: 85.50
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(104,800,85.50)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 105
+Enter value for price: 2000
+Enter value for issue_price: 150
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(105,2000,150)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 106
+Enter value for price: 1100
+Enter value for issue_price: 130.50
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(106,1100,130.50)
+
+1 row created.
+
+SQL> /
+Enter value for bid: 107
+Enter value for price: 3500
+Enter value for issue_price: 300
+old   1: insert into book_price values(&bid,&price,&issue_price)
+new   1: insert into book_price values(107,3500,300)
+
+1 row created.
+
+SQL> select * from book_price
+  2  select * from book_price
+  3
+SQL> select * from book_price;
+
+    BOOKID      PRICE ISSUE_PRICE
+---------- ---------- -----------
+       101       1200         100
+       102       1500         100
+       103       1000         100
+       104        800          86
+       105       2000         150
+       106       1100         131
+       107       3500         300
+
+7 rows selected.
+
+SQL> commit ;
+
+Commit complete.
+
+SQL> select * from table login where Privilege ='admin';
+select * from table login where Privilege ='admin'
+                    *
+ERROR at line 1:
+ORA-00906: missing left parenthesis
+
+
+SQL> select * from login where Privilege ='Admin';
+
+        ID USERNAME             PASSWORD             PRIVILEGE
+---------- -------------------- -------------------- --------------------
+         1 Priyanshu            12345                Admin
+         2 Nitin                12345                Admin
+
+SQL> select * from book_price where issue_price=100;
+
+    BOOKID      PRICE ISSUE_PRICE
+---------- ---------- -----------
+       101       1200         100
+       102       1500         100
+       103       1000         100
+
+SQL> select author from book_details where bookid=104 ;
+
+AUTHOR
+--------------------
+Yashavant Kanetkar
+
+SQL> select author from book_details where title like 'Let Us C++' ;
+
+AUTHOR
+--------------------
+Yashavant Kanetkar
+
+SQL> select * from login where username like 'S%';
+
+        ID USERNAME             PASSWORD             PRIVILEGE
+---------- -------------------- -------------------- --------------------
+         3 Saaransh             12345                Student
+         4 Sumit                12345                Student
+         7 Sidhu                12345                Faculty
+         8 Sanchit              12345                Faculty
+
+SQL> select max(price) from book_price ;
+
+MAX(PRICE)
+----------
+      3500
+
+SQL> select max(price),min(price) from book_price ;
+
+MAX(PRICE) MIN(PRICE)
+---------- ----------
+      3500        800
+
+SQL> select max(price),min(price),sum(price) from book_price ;
+
+MAX(PRICE) MIN(PRICE) SUM(PRICE)
+---------- ---------- ----------
+      3500        800      11100
+
+SQL> select * from book_details union select * from book_price ;
+select * from book_details union select * from book_price
+*
+ERROR at line 1:
+ORA-01789: query block has incorrect number of result columns
+
+
+SQL> select * from book_details union all select * from book_price ;
+select * from book_details union all select * from book_price
+*
+ERROR at line 1:
+ORA-01789: query block has incorrect number of result columns
+
+
+SQL> select id, username from book_details union all select id,bookid from book_price ;
+select id, username from book_details union all select id,bookid from book_price
+           *
+ERROR at line 1:
+ORA-00904: "USERNAME": invalid identifier
+
+
+SQL> select id, from book_details union all select id,bookid from book_price ;
+select id, from book_details union all select id,bookid from book_price
+           *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select id from book_details union all select id,bookid from book_price ;
+select id from book_details union all select id,bookid from book_price
+                                             *
+ERROR at line 1:
+ORA-00904: "ID": invalid identifier
+
+
+SQL> select id from book_details union all select id from book_price ;
+select id from book_details union all select id from book_price
+                                             *
+ERROR at line 1:
+ORA-00904: "ID": invalid identifier
+
+
+SQL> select id from book_details Minus select id from book_price ;
+select id from book_details Minus select id from book_price
+                                         *
+ERROR at line 1:
+ORA-00904: "ID": invalid identifier
+
+
+SQL> select id from book_details Minus select id from login  ;
+
+no rows selected
+
+SQL> select id from book_details union select id from login  ;
+
+        ID
+----------
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+
+8 rows selected.
+
+SQL> select * from book_details union select * from login  ;
+select * from book_details union select * from login
+*
+ERROR at line 1:
+ORA-01789: query block has incorrect number of result columns
+
+
+SQL> select id , bookid  from book_details union select id ,username from login  ;
+select id , bookid  from book_details union select id ,username from login
+            *
+ERROR at line 1:
+ORA-01790: expression must have same datatype as corresponding expression
+
+
+SQL> select id , bookid  from book_details union select id ,bid from book_issue ;
+select id , bookid  from book_details union select id ,bid from book_issue
+                                                       *
+ERROR at line 1:
+ORA-00904: "BID": invalid identifier
+
+
+SQL> select id , bookid  from book_details union select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         2        103
+         4        106
+         5        104
+         6        105
+         7        107
+
+7 rows selected.
+
+SQL> select id , bookid  from book_details union all select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         2        103
+         5        104
+         6        105
+         4        106
+         7        107
+         1        101
+         2        102
+         5        104
+         6        105
+
+        ID     BOOKID
+---------- ----------
+         7        107
+
+12 rows selected.
+
+SQL> select id , bookid  from book_details minus select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         2        103
+         4        106
+
+SQL> select id , bookid  from book_details intersect select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         5        104
+         6        105
+         7        107
+
+SQL>SQL> select id , bookid  from book_details union select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         2        103
+         4        106
+         5        104
+         6        105
+         7        107
+
+7 rows selected.
+
+SQL> select id , bookid  from book_details union all select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         2        103
+         5        104
+         6        105
+         4        106
+         7        107
+         1        101
+         2        102
+         5        104
+         6        105
+
+        ID     BOOKID
+---------- ----------
+         7        107
+
+12 rows selected.
+
+SQL> select id , bookid  from book_details minus select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         2        103
+         4        106
+
+SQL> select id , bookid  from book_details intersect select id ,bookid from book_issue ;
+
+        ID     BOOKID
+---------- ----------
+         1        101
+         2        102
+         5        104
+         6        105
+         7        107
+
+SQL> commit ;
+
+
+
+Commit complete.
+///////////////////////////////
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon May 3 21:26:33 2021
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> select * from login ;
+
+        ID USERNAME             PASSWORD             PRIVILEGE
+---------- -------------------- -------------------- --------------------
+         1 Priyanshu            12345                Admin
+         2 Nitin                12345                Admin
+         3 Saaransh             12345                Student
+         4 Sumit                12345                Student
+         5 Abhijeet             12345                Student
+         6 Akshat               12345                Student
+         7 Sidhu                12345                Faculty
+         8 Sanchit              12345                Faculty
+
+8 rows selected.
+
+SQL> select avg(price) from book_issue.price;
+select avg(price) from book_issue.price
+                                  *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select avg(price) from book_issue;
+select avg(price) from book_issue
+           *
+ERROR at line 1:
+ORA-00904: "PRICE": invalid identifier
+
+
+SQL> select avg(price)as average from book_issue;
+select avg(price)as average from book_issue
+           *
+ERROR at line 1:
+ORA-00904: "PRICE": invalid identifier
+
+
+SQL> select avg(price)as average from book_issue.price group by price;
+select avg(price)as average from book_issue.price group by price
+                                            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select avg(price)as average from price.book_issue group by price;
+select avg(price)as average from price.book_issue group by price
+                                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select avg(price)as average from price.book_price group by price;
+select avg(price)as average from price.book_price group by price
+                                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select avg(price)as average from book_price.price group by price;
+select avg(price)as average from book_price.price group by price
+                                            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from book_price ;
+
+    BOOKID      PRICE ISSUE_PRICE
+---------- ---------- -----------
+       101       1200         100
+       102       1500         100
+       103       1000         100
+       104        800          86
+       105       2000         150
+       106       1100         131
+       107       3500         300
+
+7 rows selected.
+
+SQL> select * from book_issue;
+
+        ID     BOOKID ISSUE_DATE           RETURN_DATE
+---------- ---------- -------------------- --------------------
+         1        101 2020-01-01           2020-02-03
+         2        102 2020-02-03           2020-02-04
+         5        104 2020-05-06           2020-05-07
+         6        105 2020-03-06           2020-04-12
+         7        107 2020-06-06           2020-07-07
+
+SQL> select avg(price) from book_price;
+
+AVG(PRICE)
+----------
+1585.71429
+
+SQL> select sum(price) from book_price;
+
+SUM(PRICE)
+----------
+     11100
+
+SQL> select min(issue_price) from book_price;
+
+MIN(ISSUE_PRICE)
+----------------
+              86
+
+SQL> select max(return_price) from book_price;
+select max(return_price) from book_price
+           *
+ERROR at line 1:
+ORA-00904: "RETURN_PRICE": invalid identifier
+
+
+SQL> select max(return_price) from book_issue;
+select max(return_price) from book_issue
+           *
+ERROR at line 1:
+ORA-00904: "RETURN_PRICE": invalid identifier
+
+
+SQL> select max(issue_price) from book_issue;
+select max(issue_price) from book_issue
+           *
+ERROR at line 1:
+ORA-00904: "ISSUE_PRICE": invalid identifier
+
+
+SQL> select max(issue_price) from book_price;
+
+MAX(ISSUE_PRICE)
+----------------
+             300
+
+SQL> select lower(uname) from login;
+select lower(uname) from login
+             *
+ERROR at line 1:
+ORA-00904: "UNAME": invalid identifier
+
+
+SQL> select lower(u_name) from login;
+select lower(u_name) from login
+             *
+ERROR at line 1:
+ORA-00904: "U_NAME": invalid identifier
+
+
+SQL> select lower(username) from login ;
+
+LOWER(USERNAME)
+--------------------
+priyanshu
+nitin
+saaransh
+sumit
+abhijeet
+akshat
+sidhu
+sanchit
+
+8 rows selected.
+
+SQL> select initcap(username) from login ;
+
+INITCAP(USERNAME)
+--------------------
+Priyanshu
+Nitin
+Saaransh
+Sumit
+Abhijeet
+Akshat
+Sidhu
+Sanchit
+
+8 rows selected.
+
+SQL> select max(issue_price) from book_price;
+
+MAX(ISSUE_PRICE)
+----------------
+             300
+
+SQL> select count(bookid) from book_details ;
+
+COUNT(BOOKID)
+-------------
+            7
+
+SQL> select login.username, login.id , book_details.title form login inner join book_details on login.id=book_details.id'
+  2  select login.username, login.id , book_details.title form login inner join book_details on login.id=book_details.id;
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> select login.username, login.id , book_details.title form login inner join book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title form login inner join book_details on login.id=book_details.id
+                                                          *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select login.username, login.id , book_details.title from login inner join book_details on login.id=book_details.id;
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Priyanshu                     1
+Java For Dummies
+
+Nitin                         2
+Let Us C
+
+Nitin                         2
+Java: The Complete Reference
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sumit                         4
+Witcher
+
+Abhijeet                      5
+Let Us C++
+
+Akshat                        6
+Harry Potter 4
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sidhu                         7
+Batman
+
+
+7 rows selected.
+
+SQL> select login.username, login.id , book_details.title from login outer join book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title from login outer join book_details on login.id=book_details.id
+                                                                                           *
+ERROR at line 1:
+ORA-00904: "LOGIN"."ID": invalid identifier
+
+
+SQL> select login.username, login.id , book_details.title from login outer join book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title from login outer join book_details on login.id=book_details.id
+                                                                                           *
+ERROR at line 1:
+ORA-00904: "LOGIN"."ID": invalid identifier
+
+
+SQL> select login.username, login.id , book_details.title from login left outer join book_details on login.id=book_details.id;
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Priyanshu                     1
+Java For Dummies
+
+Nitin                         2
+Java: The Complete Reference
+
+Nitin                         2
+Let Us C
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Abhijeet                      5
+Let Us C++
+
+Akshat                        6
+Harry Potter 4
+
+Sumit                         4
+Witcher
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sidhu                         7
+Batman
+
+Sanchit                       8
+
+
+Saaransh                      3
+
+
+
+9 rows selected.
+
+SQL> select login.username, login.id , book_details.title from login left join book_details on login.id=book_details.id;
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Priyanshu                     1
+Java For Dummies
+
+Nitin                         2
+Java: The Complete Reference
+
+Nitin                         2
+Let Us C
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Abhijeet                      5
+Let Us C++
+
+Akshat                        6
+Harry Potter 4
+
+Sumit                         4
+Witcher
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sidhu                         7
+Batman
+
+Sanchit                       8
+
+
+Saaransh                      3
+
+
+
+9 rows selected.
+
+SQL> select login.username, login.id , book_details.title from login right join book_details on login.id=book_details.id;
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Priyanshu                     1
+Java For Dummies
+
+Nitin                         2
+Let Us C
+
+Nitin                         2
+Java: The Complete Reference
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sumit                         4
+Witcher
+
+Abhijeet                      5
+Let Us C++
+
+Akshat                        6
+Harry Potter 4
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Sidhu                         7
+Batman
+
+
+7 rows selected.
+
+SQL> select login.username, login.id , book_details.title from login full outer join book_details on login.id=book_details.id;
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Priyanshu                     1
+Java For Dummies
+
+Nitin                         2
+Let Us C
+
+Nitin                         2
+Java: The Complete Reference
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Saaransh                      3
+
+
+Sumit                         4
+Witcher
+
+Abhijeet                      5
+Let Us C++
+
+
+USERNAME                     ID
+-------------------- ----------
+TITLE
+--------------------------------------------------
+Akshat                        6
+Harry Potter 4
+
+Sidhu                         7
+Batman
+
+Sanchit                       8
+
+
+
+9 rows selected.
+
+SQL> select login.username, login.id , book_details.title from login full equi join book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title from login full equi join book_details on login.id=book_details.id
+                                                                     *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select login.username, login.id , book_details.title from login full, book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title from login full, book_details on login.id=book_details.id
+                                                                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select login.username, login.id , book_details.title from login full , book_details on login.id=book_details.id;
+select login.username, login.id , book_details.title from login full , book_details on login.id=book_details.id
+                                                                                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select book_issue.id , book.issue.booid, book,issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid;
+select book_issue.id , book.issue.booid, book,issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid
+                                              *
+ERROR at line 1:
+ORA-00904: "ISSUE"."ISSUE_DATE": invalid identifier
+
+
+SQL> select book_issue.id , book.issue.booid, book_issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid;
+select book_issue.id , book.issue.booid, book_issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid
+                       *
+ERROR at line 1:
+ORA-00904: "BOOK"."ISSUE"."BOOID": invalid identifier
+
+
+SQL> select book_issue.id , book.issue.bookid, book_issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid;
+select book_issue.id , book.issue.bookid, book_issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid
+                       *
+ERROR at line 1:
+ORA-00904: "BOOK"."ISSUE"."BOOKID": invalid identifier
+
+
+SQL> select book_issue.id , book_issue.bookid, book_issue.issue_date, book_details.author ,book_details.title from book_issue left join book_details on book_issue.bookid=book_details.bookid;
+
+        ID     BOOKID ISSUE_DATE           AUTHOR
+---------- ---------- -------------------- --------------------
+TITLE
+--------------------------------------------------
+         1        101 2020-01-01           Paul J. Deitel
+Java For Dummies
+
+         2        102 2020-02-03           Herbert Schildt
+Java: The Complete Reference
+
+         5        104 2020-05-06           Yashavant Kanetkar
+Let Us C++
+
+
+        ID     BOOKID ISSUE_DATE           AUTHOR
+---------- ---------- -------------------- --------------------
+TITLE
+--------------------------------------------------
+         6        105 2020-03-06           J.K Rowling
+Harry Potter 4
+
+         7        107 2020-06-06           Bob Kane
+Batman
+
+
+SQL> select book_issue.id , book_issue.bookid, book_issue.issue_date, book_details.author ,book_details.title from book_issue full join book_details on book_issue.bookid=book_details.bookid;
+
+        ID     BOOKID ISSUE_DATE           AUTHOR
+---------- ---------- -------------------- --------------------
+TITLE
+--------------------------------------------------
+         1        101 2020-01-01           Paul J. Deitel
+Java For Dummies
+
+         2        102 2020-02-03           Herbert Schildt
+Java: The Complete Reference
+
+                                           Yashavant Kanetkar
+Let Us C
+
+
+        ID     BOOKID ISSUE_DATE           AUTHOR
+---------- ---------- -------------------- --------------------
+TITLE
+--------------------------------------------------
+         5        104 2020-05-06           Yashavant Kanetkar
+Let Us C++
+
+         6        105 2020-03-06           J.K Rowling
+Harry Potter 4
+
+                                           Priyanshu Saklani
+Witcher
+
+
+        ID     BOOKID ISSUE_DATE           AUTHOR
+---------- ---------- -------------------- --------------------
+TITLE
+--------------------------------------------------
+         7        107 2020-06-06           Bob Kane
+Batman
+
+
+7 rows selected.
+
+SQL>
+
